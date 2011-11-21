@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<project name="org.pathvisio.ora.plugin" default="jar" basedir=".">
+
+  <property name="base.name" value="org.pathvisio.ora.plugin"/>
+  
+  	<path id="project.class.path">
+		<fileset dir="${pathvisio.dir}/lib">
+			<include name="org.bridgedb.jar"/>
+		</fileset>
+		<fileset dir="${pathvisio.dir}/modules">
+			<include name="org.pathvisio.core.jar"/>
+			<include name="org.pathvisio.gui.jar"/>
+			<include name="org.pathvisio.desktop.jar"/>
+		</fileset>
+		<fileset dir="../lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="../src0/dist">
+			<include name="org.pathvisio.data.jar"/>
+		</fileset>
+		<fileset dir="../src1/dist">
+			<include name="org.pathvisio.data.jar"/>
+		</fileset>
+	</path>
+
+
+  <import file="${pathvisio.dir}/plugin-common.xml" />
+
+</project>
