@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<project name="org.pathvisio.data" default="jar" basedir=".">
+
+  <property name="base.name" value="org.pathvisio.data"/>
+  
+  	<path id="project.class.path">
+		<fileset dir="${pathvisio.dir}/lib">
+			<include name="org.bridgedb.jar"/>
+			<include name="commons-math-2.0.jar"/>
+		</fileset>
+	</path>
+
+  <import file="${pathvisio.dir}/plugin-common.xml" />
+
+</project>
