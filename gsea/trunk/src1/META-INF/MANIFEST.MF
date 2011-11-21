@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.pathvisio.gsea.ora
+Bundle-SymbolicName: org.pathvisio.gsea.ora
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.pathvisio.ora.gsea,
+ org.pathvisio.ora.util,
+ org.pathvisio.ora.zscore
+Require-Bundle: org.bridgedb;bundle-version="1.1.0",
+ org.pathvisio.jfreechart;bundle-version="1.0.0",
+ org.pathvisio.data;bundle-version="1.0.0"
