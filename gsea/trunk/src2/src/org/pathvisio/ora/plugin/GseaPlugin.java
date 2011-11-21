@@ -5,11 +5,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
 import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.gex.SimpleGex;
 import org.pathvisio.desktop.plugin.Plugin;
 
-public class GseaPlugin implements Plugin
+public class GseaPlugin implements Plugin, BundleActivator
 {
 	private PvDesktop desktop;
 
@@ -69,6 +71,18 @@ public class GseaPlugin implements Plugin
 				StatisticsWizard.run(desktop);
 			}
 		}
+	}
+
+	@Override
+	public void start(BundleContext context) throws Exception
+	{
+		GseaPlugin plugin = new GseaPlugin();
+		context.registerService(Plugin.class.getName(), plugin, null);	
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception
+	{
 	}
 
 }
