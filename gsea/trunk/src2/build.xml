@@ -10,6 +10,7 @@
 			<include name="org.pathvisio.swingworker.jar"/>
 			<include name="org.pathvisio.jgoodies.forms.jar"/>
 			<include name="org.pathvisio.browserlauncher.jar"/>
+			<include name="org.eclipse.osgi.jar"/>
 		</fileset>
 		<fileset dir="${pathvisio.dir}/modules">
 			<include name="org.pathvisio.core.jar"/>
