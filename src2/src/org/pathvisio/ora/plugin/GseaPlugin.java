@@ -55,7 +55,7 @@ public class GseaPlugin implements Plugin, BundleActivator
 		public OraWizardAction(PvDesktop pvDesktop)
 		{
 			this.desktop = pvDesktop;
-			putValue (NAME, "Statistics...");
+			putValue (NAME, "Gene Set Enrichment Analysis");
 			putValue (SHORT_DESCRIPTION, "Perform simple over-representation analysis to find pathways changed pathways.");
 		}
 

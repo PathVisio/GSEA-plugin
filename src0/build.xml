@@ -1,15 +1,49 @@
 <?xml version="1.0"?>
-<project name="org.pathvisio.data" default="jar" basedir=".">
+<project name="org.pathvisio.data" default="install" basedir=".">
 
-  <property name="base.name" value="org.pathvisio.data"/>
-  
-  	<path id="project.class.path">
+	<property name="ant.build.javac.target" value="1.5" />
+	<property name="ant.build.javac.source" value="1.5" />
+
+	<property name="base.name" value="org.pathvisio.data" />
+	<property name="jar.name" value="${base.name}.jar" />
+	<property name="pathvisio.dir" value="../../../../pathvisio/trunk" />
+
+	<property name="install.dir" value="../gsea-plugins" />
+
+	<path id="project.class.path">
 		<fileset dir="${pathvisio.dir}/lib">
-			<include name="org.bridgedb.jar"/>
-			<include name="commons-math-2.0.jar"/>
+			<include name="org.bridgedb.jar" />
+			<include name="commons-math-2.0.jar" />
 		</fileset>
 	</path>
 
-  <import file="${pathvisio.dir}/plugin-common.xml" />
+	<target name="prepare">
+		<mkdir dir="build" />
+		<mkdir dir="../gsea-plugins"/>
+	</target>
+
+	<target name="build" depends="prepare">
+		<javac srcdir="." includes="**" debug="true" destdir="build">
+			<classpath refid="project.class.path" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="build">
+		<echo>Creating JAR: ${jar.name}</echo>
+		<jar jarfile="${jar.name}" basedir="build" manifest="META-INF/MANIFEST.MF" />
+	</target>
+
+	<target name="install" depends="jar">
+		<copy file="${jar.name}" toDir="${install.dir}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="build" />
+	</target>
+
+	<target name="dist-clean" depends="clean">
+		<delete file="${jar.name}" />
+		<delete dir="${install.dir}"/>
+	</target>
 
 </project>
