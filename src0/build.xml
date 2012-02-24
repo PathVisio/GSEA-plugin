@@ -19,6 +19,7 @@
 
 	<target name="prepare">
 		<mkdir dir="build" />
+		<copy file="plugin.props" toDir="build" />
 		<mkdir dir="../gsea-plugins"/>
 	</target>
 
