@@ -31,6 +31,7 @@
 
 	<target name="prepare">
 		<mkdir dir="build" />
+		<copy file="plugin.props" toDir="build" />
 		<fail message="Can't find ${pathvisio.dir}/modules/org.pathvisio.core.jar, please specify the path to pathvisio with -Dpathvisio.dir=....">
 			<condition>
 				<not>

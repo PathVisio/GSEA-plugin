@@ -21,6 +21,7 @@
 
 	<target name="prepare">
 		<mkdir dir="build" />
+		<copy file="plugin.props" toDir="build" />
 		<copydir dest="${install.dir}" src="../lib/"/>
 		<fail message="Can't find ${install.dir}/org.pathvisio.data.jar, please run the ant script in src0 before.">
 			<condition>
