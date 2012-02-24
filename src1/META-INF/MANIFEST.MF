@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.pathvisio.gsea.ora
 Bundle-SymbolicName: org.pathvisio.gsea.ora
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Export-Package: org.pathvisio.ora.gsea,
  org.pathvisio.ora.util,
  org.pathvisio.ora.zscore
