@@ -9,9 +9,9 @@
 		<sequential>
 			<subant target="@{target}">
 				<filelist dir=".">
-					<file name="src0/build.xml"/>
-					<file name="src1/build.xml"/>
-					<file name="src2/build.xml"/>
+					<file name="org.pathvisio.data/build.xml"/>
+					<file name="org.pathvisio.ora/build.xml"/>
+					<file name="org.pathvisio.ora.plugin/build.xml"/>
 				</filelist>
 			</subant>
 		</sequential>
