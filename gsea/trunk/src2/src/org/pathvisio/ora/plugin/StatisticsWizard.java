@@ -1,44 +1,47 @@
 package org.pathvisio.ora.plugin;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 import java.io.File;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JRadioButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 import org.pathvisio.core.preferences.PreferenceManager;
+import org.pathvisio.core.util.ProgressKeeper;
+import org.pathvisio.core.util.ProgressKeeper.ProgressEvent;
+import org.pathvisio.core.util.ProgressKeeper.ProgressListener;
 import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.util.BrowseButtonActionListener;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.nexes.wizard.Wizard;
 import com.nexes.wizard.WizardPanelDescriptor;
 
 public class StatisticsWizard extends Wizard
 {
-	private final PvDesktop pvDesktop;
 	private GseaGui gsea;
-	private ZScoreGui zscore;
 	private File pwDir;
+	private File geneSetCollection;
 	
 	public StatisticsWizard(PvDesktop pvDesktop)
 	{
-		this.pvDesktop = pvDesktop;
 		gsea = new GseaGui(pvDesktop);
-		zscore = new ZScoreGui(pvDesktop);
+		getDialog().setPreferredSize(new Dimension(800,500));
 		
 		getDialog().setTitle("Over-Representation analysis wizard");
-
 		this.registerWizardPanel(new ChooseSetsPage());
-		this.registerWizardPanel(new MethodPage());
 		this.registerWizardPanel(new GseaConfigPage());
-		this.registerWizardPanel(new ZscoreConfigPage());
+		this.registerWizardPanel(new CalcPage());
 
 		setCurrentPanel(ChooseSetsPage.IDENTIFIER);
 	}
@@ -49,6 +52,8 @@ public class StatisticsWizard extends Wizard
 
 		JTextField txtInput;
 		JButton btnInput;
+		JTextField txtGeneSets;
+		JButton btnGeneSets;
 
 		public ChooseSetsPage()
 		{
@@ -58,12 +63,8 @@ public class StatisticsWizard extends Wizard
 		@Override
 		protected Component createContents()
 		{
-			DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
-
-			builder.setDefaultDialogBorder();
-			builder.appendColumn("right:pref");
-			builder.appendColumn("pref");
-			builder.appendColumn("pref");
+			DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout("right:pref, 3dlu, pref, 3dlu, pref", "15dlu, pref, 10dlu, pref"));
+			CellConstraints cc = new CellConstraints();
 
 			txtInput = new JTextField(40);
 			txtInput.setText(PreferenceManager.getCurrent().get(StatisticsPreference.STATS_DIR_LAST_USED_PATHWAY));
@@ -71,14 +72,23 @@ public class StatisticsWizard extends Wizard
 			btnInput.addActionListener(new BrowseButtonActionListener(txtInput, null,
 					JFileChooser.DIRECTORIES_ONLY));
 			
-			builder.append("Input file", txtInput, btnInput);
+			builder.add(new JLabel("Pathway directory"), cc.xy(1, 2));
+			builder.add(txtInput, cc.xy(3, 2));
+			builder.add(btnInput, cc.xy(5, 2));
 
+			txtGeneSets = new JTextField(40);
+			btnGeneSets = new JButton("Browse");
+			btnGeneSets.addActionListener(new BrowseButtonActionListener(txtGeneSets, null, JFileChooser.FILES_ONLY));
+			
+			builder.add(new JLabel("GeneSet Collection"), cc.xy(1, 4));
+			builder.add(txtGeneSets, cc.xy(3, 4));
+			builder.add(btnGeneSets, cc.xy(5, 4));
 			return builder.getPanel();
 		}
 
 		public Object getNextPanelDescriptor()
 		{
-			return MethodPage.IDENTIFIER;
+			return GseaConfigPage.IDENTIFIER;
 		}
 
 		public Object getBackPanelDescriptor()
@@ -94,92 +104,11 @@ public class StatisticsWizard extends Wizard
 		@Override
 		public void aboutToHidePanel()
 		{
-			pwDir = new File(txtInput.getText());
-			PreferenceManager.getCurrent().setFile(StatisticsPreference.STATS_DIR_LAST_USED_PATHWAY, pwDir);
-		}
-	}
-
-	private static enum Methods
-	{
-		GSEA, ZSCORE
-	};
-
-	private Methods selectedMethod = Methods.ZSCORE; // if false, means zscore
-														// is selected.
-
-	private class MethodPage extends WizardPanelDescriptor implements ActionListener
-	{
-		public static final String IDENTIFIER = "METHOD_PAGE";
-
-		JRadioButton btnGsea;
-		JRadioButton btnZscore;
-
-		public MethodPage()
-		{
-			super(IDENTIFIER);
-		}
-
-		@Override
-		protected Component createContents()
-		{
-			btnGsea = new JRadioButton("Gene Set Enrichment Analysis (GSEA)");
-			btnZscore = new JRadioButton("Z-score");
-			ButtonGroup grpMethods = new ButtonGroup();
-
-			DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
-			builder.setDefaultDialogBorder();
-			builder.appendColumn("pref");
-
-			grpMethods.add(btnGsea);
-			grpMethods.add(btnZscore);
-
-			builder.append(btnGsea);
-			builder.append(btnZscore);
-
-			switch (selectedMethod)
-			{
-			case GSEA:
-				btnGsea.setSelected(true);
-				break;
-			case ZSCORE:
-				btnZscore.setSelected(true);
-				break;
+			if(!txtInput.getText().equals("")) {
+				pwDir = new File(txtInput.getText());
+				PreferenceManager.getCurrent().setFile(StatisticsPreference.STATS_DIR_LAST_USED_PATHWAY, pwDir);
 			}
-
-			btnGsea.addActionListener(this);
-			btnZscore.addActionListener(this);
-
-			return builder.getPanel();
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0)
-		{
-			if (arg0.getSource() == btnGsea)
-			{
-				selectedMethod = Methods.GSEA;
-
-			}
-			else if (arg0.getSource() == btnZscore)
-			{
-				selectedMethod = Methods.ZSCORE;
-			}
-		}
-
-		public Object getNextPanelDescriptor()
-		{
-			return selectedMethod == Methods.GSEA ? GseaConfigPage.IDENTIFIER
-					: ZscoreConfigPage.IDENTIFIER;
-		}
-
-		public Object getBackPanelDescriptor()
-		{
-			return ChooseSetsPage.IDENTIFIER;
-		}
-
-		public void aboutToDisplayPanel()
-		{
-			getWizard().setPageTitle("Choose statistical method");
+			if(!txtGeneSets.equals("")) geneSetCollection = new File(txtGeneSets.getText());
 		}
 	}
 
@@ -200,39 +129,137 @@ public class StatisticsWizard extends Wizard
 
 		public Object getNextPanelDescriptor()
 		{
-			return WizardPanelDescriptor.FINISH;
+			return CalcPage.IDENTIFIER;
 		}
 
 		public Object getBackPanelDescriptor()
 		{
-			return MethodPage.IDENTIFIER;
+			return ChooseSetsPage.IDENTIFIER;
 		}
 
 	}
-
-	private class ZscoreConfigPage extends WizardPanelDescriptor
+	
+	private class CalcPage extends WizardPanelDescriptor implements ProgressListener
 	{
-		public static final String IDENTIFIER = "ZSCORE_CONFIG_PAGE";
+	    public static final String IDENTIFIER = "C";
 
-		public ZscoreConfigPage()
+	    public CalcPage()
+	    {
+	        super(IDENTIFIER);
+	    }
+
+	    public Object getNextPanelDescriptor()
+	    {
+	        return FINISH;
+	    }
+
+	    public Object getBackPanelDescriptor()
+	    {
+	        return GseaConfigPage.IDENTIFIER;
+	    }
+
+	    private JProgressBar progressSent;
+	    private JTextArea progressText;
+	    private ProgressKeeper pk;
+	    private JLabel lblTask;
+
+	    @Override
+	    public void aboutToCancel()
+	    {
+	    	// let the progress keeper know that the user pressed cancel.
+	    	pk.cancel();
+	    }
+
+		protected JPanel createContents()
 		{
-			super(IDENTIFIER);
+	    	FormLayout layout = new FormLayout(
+	    			"fill:[100dlu,min]:grow",
+	    			"pref, pref, fill:pref:grow"
+	    	);
+
+	    	DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+	    	builder.setDefaultDialogBorder();
+	    	
+        	pk = new ProgressKeeper(100);
+        	pk.addListener(this);
+        	
+			progressSent = new JProgressBar(0, pk.getTotalWork());
+	        builder.append(progressSent);
+	        builder.nextLine();
+	        lblTask = new JLabel();
+	        builder.append(lblTask);
+
+	        progressText = new JTextArea();
+
+			builder.append(new JScrollPane(progressText));
+			return builder.getPanel();
 		}
 
-		@Override
-		protected Component createContents()
-		{
-			return zscore.getConfigPanel();
-		}
+	    public void setProgressValue(int i)
+	    {
+	        progressSent.setValue(i);
+	    }
 
-		public Object getNextPanelDescriptor()
-		{
-			return WizardPanelDescriptor.FINISH;
-		}
+	    public void setProgressText(String msg)
+	    {
+	        progressText.setText(msg);
+	    }
 
-		public Object getBackPanelDescriptor()
+	    public void aboutToDisplayPanel()
+	    {
+			getWizard().setPageTitle ("GSEA calculation progress");
+			
+	    	pk = new ProgressKeeper(100);
+	    	
+	        setProgressValue(0);
+	        setProgressText("");
+
+	        getWizard().setNextFinishButtonEnabled(false);
+	        getWizard().setBackButtonEnabled(false);
+	    }
+	    
+	    public void displayingPanel()
+	    {
+	    	SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+					try{
+						gsea.runCalculation(pwDir, geneSetCollection, pk, progressText);
+					} finally {
+						setProgressValue(100);
+//						pk.setProgress(100);
+						pk.finished();
+					}
+					return null;
+				}
+
+				@Override
+				public void done() {
+					pk.finished();
+					pk.setTaskName("Finished");
+					getWizard().setNextFinishButtonEnabled(true);
+					getWizard().setBackButtonEnabled(true);
+				}
+			};
+			sw.execute();
+	    }
+
+		public void progressEvent(ProgressEvent e)
 		{
-			return MethodPage.IDENTIFIER;
+			switch(e.getType())
+			{
+				case ProgressEvent.FINISHED:
+					progressSent.setValue(pk.getTotalWork());
+				case ProgressEvent.TASK_NAME_CHANGED:
+					lblTask.setText(pk.getTaskName());//TODO fix, doesn't update the label text
+					break;
+				case ProgressEvent.REPORT:
+					progressText.append(e.getProgressKeeper().getReport() + "\n");
+					break;
+				case ProgressEvent.PROGRESS_CHANGED:
+					progressSent.setValue(pk.getProgress());
+					break;
+			}
 		}
 
 	}
@@ -244,15 +271,8 @@ public class StatisticsWizard extends Wizard
 		
 		if (wizard.getReturnCode() == Wizard.FINISH_RETURN_CODE)
 		{
-			switch (wizard.selectedMethod)
-			{
-			case GSEA:
-				wizard.gsea.finishedPressed(wizard.pwDir);
-				break;
-			case ZSCORE:
-				wizard.zscore.doResults(wizard.pwDir);
-				break;
-			}
+			GseaResultsFrame resultFrame = new GseaResultsFrame(desktop.getFrame(), wizard.gsea.getResults());
+			resultFrame.setVisible(true);
 		}
 	}
 
