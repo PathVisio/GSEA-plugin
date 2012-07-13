@@ -17,32 +17,13 @@ public class GseaPlugin implements Plugin, BundleActivator
 
 	public void done()
 	{
-		// nothing to do.
+		desktop.unregisterMenuAction("Data", oraWizardAction);
 	}
 
 	public void init(PvDesktop desktop)
 	{
 		this.desktop = desktop;
-		oraWizardAction = new OraWizardAction(desktop);
-		
-//		// remove the menu item created by the default statistics dialog
-//		JMenuBar menuBar = desktop.getSwingEngine().getApplicationPanel().getMenuBar();
-//		for (int i = 0; i < menuBar.getMenuCount(); ++i)
-//		{
-//			JMenu menu = menuBar.getMenu(i);
-//			if ("Data".equals(menu.getText()))
-//			{
-//				for (int j = 0; j < menu.getMenuComponentCount(); ++j)
-//				{
-//					Component comp = menu.getMenuComponent(j);
-					//TODO
-//					break;
-//				}
-//				break;
-//			}	
-//		}
-		
-		
+		oraWizardAction = new OraWizardAction(desktop);		
 		desktop.registerMenuAction ("Data", oraWizardAction);	
 	}
 

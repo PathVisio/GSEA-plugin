@@ -370,7 +370,7 @@ public class GseaImpl
 	}
 
 	// calculation of the permuted GSEA depending on the number and type of permutations
-	public GseaPathwayResult permuted_gsea(int permutationNum, List<String> geneIds, DataInterface gex, IDMapper sgdb, List<String> sampleNames1, 
+	public GseaPathwayResult permuted_gsea(int permutationNum, List<String> geneIds, DataInterface gex, List<String> sampleNames1, 
 			List<String> sampleNames2, boolean permuteSamples, DataSet dataset) throws SAXException, IDMapperException, IOException, DataException
 	{
 		int significantPermutationCount = 0;

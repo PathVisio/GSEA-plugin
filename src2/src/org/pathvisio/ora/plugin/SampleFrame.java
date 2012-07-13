@@ -26,11 +26,11 @@ import java.util.Map.Entry;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 
-import org.pathvisio.gui.dialogs.OkCancelDialog;
 import org.pathvisio.data.DataInterface;
+import org.pathvisio.gui.dialogs.OkCancelDialog;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -43,10 +43,10 @@ public class SampleFrame extends OkCancelDialog{
 	 */
 	public SampleFrame(Component locationComponent, DataInterface gex) {
 		super(null, "Samples choice", null, true);
-		setDialogComponent(createDialogPane(gex));
-		setSize(390, 500);
-		setLocationRelativeTo(locationComponent);
-		validate();
+//		setDialogComponent(createDialogPane(gex));
+//		setSize(390, 500);
+//		setLocationRelativeTo(locationComponent);
+//		validate();
 	}
 	
 	private ButtonGroup groupe = null;
@@ -54,9 +54,9 @@ public class SampleFrame extends OkCancelDialog{
 	private JRadioButton box2;
 	private static Map <String, ArrayList<JRadioButton>> sampleres = new HashMap <String, ArrayList<JRadioButton>>();
 	
-	protected Component createDialogPane(DataInterface gex) {		
+	public JPanel createDialogPane(DataInterface gex) {		
 	    FormLayout layout = new FormLayout (
-	    		"50dlu, 4dlu, 50dlu, 4dlu, 50dlu",
+	    		"50dlu, 4dlu, 40dlu, 4dlu, 40dlu",
 	    		"");
 	    DefaultFormBuilder builder = new DefaultFormBuilder(layout);
 	    builder.setDefaultDialogBorder();
@@ -84,7 +84,7 @@ public class SampleFrame extends OkCancelDialog{
 	    	builder.nextLine();
 	    	sampleres.put(samplesNames.get(s), (ArrayList<JRadioButton>) cb);
 	    }
-	    return new JScrollPane(builder.getPanel());
+	    return builder.getPanel();
 	}
 	
 	// return the selected samples in the two phenotypes

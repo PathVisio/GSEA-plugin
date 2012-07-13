@@ -355,7 +355,7 @@ public class ZScoreGui
 						);
 						//TODO: Important???
 //							statisticsPlugin.result = result;
-						//dlg.pack();
+//						dlg.pack();
 					}
 				}
 				catch (InterruptedException e)
@@ -371,7 +371,7 @@ public class ZScoreGui
 					Logger.log.error ("Statistics calculation exception", e);
 				}
 			}
-			btnCalc.setEnabled(true);
+//			btnCalc.setEnabled(true);
 			btnSave.setEnabled(true);
 		}
 	}

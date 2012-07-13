@@ -18,6 +18,7 @@
 package org.pathvisio.ora.gsea;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.chart.ChartFactory;
@@ -40,6 +41,8 @@ public class GseaPathwayResult implements RowWithProperties<Column>, Comparable<
 	private List<Double> esDrawing;
 	private List<String> core;
 	private List<String> ids;
+	
+	private List<String> idsNotMapped;
 
 	public GseaPathwayResult(List<Double> esDrawing, List<String> coreEnrichment,
 			List<String> ids, double esMax, double pValue)
@@ -49,6 +52,7 @@ public class GseaPathwayResult implements RowWithProperties<Column>, Comparable<
 		this.ids = ids;
 		this.esMax = esMax;
 		this.pValue = pValue;
+		idsNotMapped = new ArrayList<String>();
 	}
 
 	public void createInfo(String setName, int perm) 
@@ -92,6 +96,12 @@ public class GseaPathwayResult implements RowWithProperties<Column>, Comparable<
 
 		this.pathwayName = setName;
 		this.pathwayText = results.toString();
+	}
+	
+	public void addIdNotMapped(String id) {
+		if(id != null && !idsNotMapped.contains(id)) {
+			idsNotMapped.add(id);
+		}
 	}
 
 	public String getPwName(){
