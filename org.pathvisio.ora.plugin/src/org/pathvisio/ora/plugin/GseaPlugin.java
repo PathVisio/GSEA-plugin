@@ -7,8 +7,8 @@ import javax.swing.JOptionPane;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.pathvisio.data.DataInterface;
 import org.pathvisio.desktop.PvDesktop;
-import org.pathvisio.desktop.gex.SimpleGex;
 import org.pathvisio.desktop.plugin.Plugin;
 
 public class GseaPlugin implements Plugin, BundleActivator
@@ -47,7 +47,7 @@ public class GseaPlugin implements Plugin, BundleActivator
 
 		public void actionPerformed (ActionEvent e)
 		{
-			SimpleGex gex = desktop.getGexManager().getCurrentGex();
+			DataInterface gex = desktop.getGexManager().getCurrentGex();
 			if (gex == null)
 			{
 				JOptionPane.showMessageDialog(desktop.getFrame(), "Select an expression dataset first");
