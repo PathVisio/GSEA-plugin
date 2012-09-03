@@ -371,10 +371,6 @@ public class ZScoreGui
 					Logger.log.error ("Statistics calculation exception", e);
 				}
 			}
-<<<<<<< HEAD:org.pathvisio.ora.plugin/src/org/pathvisio/ora/plugin/ZScoreGui.java
-//			btnCalc.setEnabled(true);
-=======
->>>>>>> Moving org.pathvisio.data package to core of PathVisio:src2/src/org/pathvisio/ora/plugin/ZScoreGui.java
 			btnSave.setEnabled(true);
 		}
 	}

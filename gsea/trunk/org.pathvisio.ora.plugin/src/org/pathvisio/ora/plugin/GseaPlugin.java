@@ -36,13 +36,8 @@ public class GseaPlugin implements Plugin, BundleActivator
 		public OraWizardAction(PvDesktop pvDesktop)
 		{
 			this.desktop = pvDesktop;
-<<<<<<< HEAD:org.pathvisio.ora.plugin/src/org/pathvisio/ora/plugin/GseaPlugin.java
 			putValue (NAME, "Gene Set Enrichment Analysis");
-			putValue (SHORT_DESCRIPTION, "Perform simple over-representation analysis to find pathways changed pathways.");
-=======
-			putValue (NAME, "Statistics...");
 			putValue (SHORT_DESCRIPTION, "Perform simple over-representation analysis to find changed pathways.");
->>>>>>> Moving org.pathvisio.data package to core of PathVisio:src2/src/org/pathvisio/ora/plugin/GseaPlugin.java
 		}
 
 		public void actionPerformed (ActionEvent e)

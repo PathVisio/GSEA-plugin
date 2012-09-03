@@ -104,8 +104,8 @@ public class GseaGui
 
 	private JPanel getRightPanel() {
 		desktop.loadGexCache();
-		SampleFrame sf = new SampleFrame(desktop.getFrame(), new PgexImpl(desktop.getGexManager().getCurrentGex()));
-		JPanel panel = sf.createDialogPane(new PgexImpl(desktop.getGexManager().getCurrentGex()));
+		SampleFrame sf = new SampleFrame(desktop.getFrame(), desktop.getGexManager().getCurrentGex());
+		JPanel panel = sf.createDialogPane(desktop.getGexManager().getCurrentGex());
 		return panel;
 	}
 
@@ -178,7 +178,7 @@ public class GseaGui
 			
 			// get current gene database and gene expression dataset
 			IDMapper sgdb = desktop.getSwingEngine().getGdbManager().getCurrentGdb();
-			DataInterface gex = new PgexImpl(desktop.getGexManager().getCurrentGex());
+			DataInterface gex = desktop.getGexManager().getCurrentGex();
 	
 			// prepare samples and dataset
 			// two list contains the idsample for each sample
