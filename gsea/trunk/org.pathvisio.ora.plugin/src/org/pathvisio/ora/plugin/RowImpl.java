@@ -1,5 +1,6 @@
 package org.pathvisio.ora.plugin;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,30 @@ public class RowImpl implements IRow
 	public Xref getXref()
 	{
 		return parent.getXref();
+	}
+
+	@Override
+	public Map<String, Object> getByName()
+	{
+		return parent.getByName();
+	}
+
+	@Override
+	public Collection<? extends ISample> getSamples()
+	{
+		return parent.getSamples();
+	}
+
+	@Override
+	public int getGroup()
+	{
+		return parent.getGroup();
+	}
+
+	@Override
+	public int compareTo(IRow o)
+	{
+		return parent.compareTo(o);
 	}
 
 }

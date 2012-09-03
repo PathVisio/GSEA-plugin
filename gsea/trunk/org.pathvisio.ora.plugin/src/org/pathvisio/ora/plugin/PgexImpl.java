@@ -1,12 +1,13 @@
 package org.pathvisio.ora.plugin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bridgedb.DataSource;
-import org.bridgedb.IDMapperException;
-import org.pathvisio.desktop.gex.Sample;
+import org.bridgedb.Xref;
 import org.pathvisio.desktop.gex.SimpleGex;
 import org.pathvisio.data.DataInterface;
 import org.pathvisio.data.DataException;
@@ -33,7 +34,7 @@ public class PgexImpl implements DataInterface
 		{
 			return gex.getNrRow();
 		}
-		catch (IDMapperException e)
+		catch (DataException e)
 		{
 			throw new DataException (e);
 		}
@@ -46,7 +47,7 @@ public class PgexImpl implements DataInterface
 		{
 			return RowImpl.getInstance(gex.getRow(row));
 		}
-		catch (IDMapperException e)
+		catch (DataException e)
 		{
 			throw new DataException (e);
 		}
@@ -59,7 +60,7 @@ public class PgexImpl implements DataInterface
 		{
 			return SampleImpl.getInstance(gex.findSample(name));
 		}
-		catch (IDMapperException e)
+		catch (DataException e)
 		{
 			throw new DataException(e);
 		}
@@ -72,7 +73,7 @@ public class PgexImpl implements DataInterface
 		{
 			return SampleImpl.getInstance(gex.getSample(id));
 		}
-		catch (IDMapperException e)
+		catch (DataException e)
 		{
 			throw new DataException(e);
 		}
@@ -91,7 +92,7 @@ public class PgexImpl implements DataInterface
 		{
 			return gex.getUsedDatasources();
 		}
-		catch (IDMapperException e)
+		catch (DataException e)
 		{
 			throw new DataException(e);
 		}
@@ -103,15 +104,27 @@ public class PgexImpl implements DataInterface
 		List<ISample> result = new ArrayList<ISample>();
 		try
 		{
-			for (Sample s : gex.getOrderedSamples())
+			for (ISample s : gex.getOrderedSamples())
 			{
 				result.add (SampleImpl.getInstance(s));
 			}
 		}
-		catch (IDMapperException e)
+		catch (DataException e)
 		{
 			throw new DataException(e);
 		}
 		return result;
+	}
+
+	@Override
+	public Map<Integer, ? extends ISample> getSamples() throws DataException
+	{
+		return gex.getSamples();
+	}
+
+	@Override
+	public Collection<? extends IRow> getData(Set<Xref> destRefs) throws DataException
+	{
+		return gex.getData(destRefs);
 	}
 }
