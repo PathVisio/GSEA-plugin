@@ -30,6 +30,7 @@ import org.pathvisio.core.debug.Logger;
 import org.pathvisio.core.preferences.PreferenceManager;
 import org.pathvisio.core.util.ProgressKeeper;
 import org.pathvisio.data.Criterion;
+import org.pathvisio.data.DataException;
 import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.gex.CachedData;
 import org.pathvisio.desktop.gex.GexManager;
@@ -166,7 +167,6 @@ public class ZScoreGui
 	private ZScoreGui.CriterionPanel critPanel;
 	private JButton btnSave;
 	private StatisticsResult result = null;
-	private JButton btnCalc;
 	private final GexManager gm;
 	private final SwingEngine se;
 	private JDialog dlg;
@@ -317,7 +317,7 @@ public class ZScoreGui
 		}
 
 		@Override
-		protected StatisticsResult doInBackground() throws IDMapperException
+		protected StatisticsResult doInBackground() throws IDMapperException, DataException
 		{
 			StatisticsResult result;
 
@@ -371,7 +371,10 @@ public class ZScoreGui
 					Logger.log.error ("Statistics calculation exception", e);
 				}
 			}
+<<<<<<< HEAD:org.pathvisio.ora.plugin/src/org/pathvisio/ora/plugin/ZScoreGui.java
 //			btnCalc.setEnabled(true);
+=======
+>>>>>>> Moving org.pathvisio.data package to core of PathVisio:src2/src/org/pathvisio/ora/plugin/ZScoreGui.java
 			btnSave.setEnabled(true);
 		}
 	}

@@ -8,14 +8,14 @@ import org.pathvisio.data.ISample;
 
 public class SampleImpl implements ISample
 {
-	private final Sample parent;
-	private static Map<Sample, SampleImpl> cache = new HashMap<Sample, SampleImpl>();
+	private final ISample parent;
+	private static Map<ISample, SampleImpl> cache = new HashMap<ISample, SampleImpl>();
 
 	/** 
 	 * SampleImpl objects are cached. This ensures that there are no two SampleImpl objects wrapping the same Sample,
 	 * and thus it is possible to test for equality on SampleImpl objects.
 	 */
-	public static SampleImpl getInstance(Sample parent)
+	public static SampleImpl getInstance(ISample parent)
 	{
 		if (!cache.containsKey(parent))
 		{
@@ -25,7 +25,7 @@ public class SampleImpl implements ISample
 		return cache.get(parent);
 	}
 	
-	private SampleImpl(Sample parent)
+	private SampleImpl(ISample parent)
 	{
 		this.parent = parent;
 	}
@@ -42,8 +42,20 @@ public class SampleImpl implements ISample
 		return parent.getName();
 	}
 
-	public Sample getParent()
+	public ISample getParent()
 	{
 		return parent;
+	}
+
+	@Override
+	public int getDataType()
+	{
+		return parent.getDataType();
+	}
+
+	@Override
+	public int compareTo(ISample o)
+	{
+		return parent.compareTo(o);
 	}
 }
