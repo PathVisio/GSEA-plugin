@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -217,7 +218,14 @@ public class ZScoreGui
 	 */
 	public JPanel getConfigPanel()
 	{
-		critPanel = new CriterionPanel(gm.getCurrentGex().getSampleNames());
+		try
+		{
+			critPanel = new CriterionPanel(gm.getCurrentGex().getSampleNames());
+		}
+		catch (DataException ex)
+		{
+			critPanel = new CriterionPanel(new ArrayList<String>());
+		}
 		return critPanel;
 	}
 
