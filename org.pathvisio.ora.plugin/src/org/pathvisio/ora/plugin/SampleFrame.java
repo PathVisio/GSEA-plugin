@@ -19,6 +19,7 @@ package org.pathvisio.ora.plugin;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import org.pathvisio.data.DataException;
 import org.pathvisio.data.DataInterface;
 import org.pathvisio.gui.dialogs.OkCancelDialog;
 
@@ -61,15 +63,21 @@ public class SampleFrame extends OkCancelDialog{
 	    DefaultFormBuilder builder = new DefaultFormBuilder(layout);
 	    builder.setDefaultDialogBorder();
 
-	    List<String> samplesNames = new ArrayList<String>();
-	    for(int cf= 0;cf<gex.getSampleNames().size();cf++){
-	    	samplesNames.add(gex.getSampleNames().get(cf));
+	    List<String> samplesNames;
+		try
+		{
+			samplesNames = gex.getSampleNames();
+		}
+		catch (DataException e)
+		{
+			samplesNames = Collections.emptyList();
 		}
 	    
-	    for (int s=0 ; s<samplesNames.size();s++){
+	    for (String s : samplesNames)
+	    {
 	    	List<JRadioButton> cb = new ArrayList<JRadioButton>();
 	    	groupe=new ButtonGroup();
-	    	JLabel samp = new JLabel(samplesNames.get(s));
+	    	JLabel samp = new JLabel(s);
 	    	box1=new JRadioButton("Phen1");
 	    	box2=new JRadioButton("Phen2");
 	    	groupe.add(box1);
@@ -82,7 +90,7 @@ public class SampleFrame extends OkCancelDialog{
 	    	builder.append(box2);
 	    	
 	    	builder.nextLine();
-	    	sampleres.put(samplesNames.get(s), (ArrayList<JRadioButton>) cb);
+	    	sampleres.put(s, (ArrayList<JRadioButton>) cb);
 	    }
 	    return builder.getPanel();
 	}
