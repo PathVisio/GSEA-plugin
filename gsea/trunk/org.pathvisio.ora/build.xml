@@ -1,58 +1,25 @@
 <?xml version="1.0"?>
-<project name="org.pathvisio.ora" default="install" basedir=".">
+<project name="org.pathvisio.ora" default="jar" basedir=".">
 
-	<property name="ant.build.javac.target" value="1.5" />
-	<property name="ant.build.javac.source" value="1.5" />
-
-	<property name="base.name" value="org.pathvisio.ora" />
-	<property name="jar.name" value="${base.name}.jar" />
 	<property name="pathvisio.dir" value="../../../../pathvisio/trunk" />
-
-	<property name="install.dir" value="../gsea-plugins/" />
+	<property name="common.bundles" value="../../common-bundles" />
+	<import file="${pathvisio.dir}/plugin-common.xml"/>
 
 	<path id="project.class.path">
 		<fileset dir="${pathvisio.dir}/lib">
 			<include name="org.bridgedb.jar" />
 		</fileset>
-		<fileset dir="${install.dir}">
-			<include name="*.jar" />
+		<fileset dir="${pathvisio.dir}/modules">
+			<include name="org.pathvisio.data.jar" />
+		</fileset>
+		<fileset dir="${common.bundles}">
+			<include name="*org.jfree*.jar" />
 		</fileset>
 	</path>
 
 	<target name="prepare">
 		<mkdir dir="build" />
 		<copy file="plugin.props" toDir="build" />
-		<copydir dest="${install.dir}" src="../lib/"/>
-		<fail message="Can't find ${install.dir}/org.pathvisio.data.jar, please run the ant script in src0 before.">
-			<condition>
-				<not>
-					<available file="${install.dir}/org.pathvisio.data.jar" />
-				</not>
-			</condition>
-		</fail>
-	</target>
-
-	<target name="build" depends="prepare">
-		<javac srcdir="." includes="**" debug="true" destdir="build">
-			<classpath refid="project.class.path" />
-		</javac>
-	</target>
-
-	<target name="jar" depends="build">
-		<echo>Creating JAR: ${jar.name}</echo>
-		<jar jarfile="${jar.name}" basedir="build" manifest="META-INF/MANIFEST.MF" />
-	</target>
-
-	<target name="install" depends="jar">
-		<copy file="${jar.name}" toDir="${install.dir}" />
-	</target>
-
-	<target name="clean">
-		<delete dir="build" />
-	</target>
-
-	<target name="dist-clean" depends="clean">
-		<delete file="${jar.name}" />
 	</target>
 
 </project>

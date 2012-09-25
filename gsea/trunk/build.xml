@@ -6,7 +6,6 @@
 		<sequential>
 			<subant target="@{target}">
 				<filelist dir=".">
-					<file name="org.pathvisio.data/build.xml"/>
 					<file name="org.pathvisio.ora/build.xml"/>
 					<file name="org.pathvisio.ora.plugin/build.xml"/>
 				</filelist>
@@ -22,8 +21,8 @@
 		<iterate target="clean"/>
 	</target>
 
-	<target name="build" description="Compile project">
-		<iterate target="build"/>
+	<target name="jar" description="Compile project">
+		<iterate target="jar"/>
 	</target>
 
 	<target name="install" description="Generate jar files">
