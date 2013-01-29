@@ -24,12 +24,21 @@
 		</fileset>
 		<fileset dir="${pathvisio.dir}">
 			<include name="*org.jfree*.jar" />
+			<include name="com.springsource.javax.servlet-2.5.0.jar" />
 		</fileset>
 	</path>
 
 	<target name="prepare">
 		<mkdir dir="build" />
 		<copy file="plugin.props" toDir="build" />
+		<mkdir dir="dist"/>
+		<!-- copies all plugin specific libraries to the dist directory-->
+		<copy toDir="dist" >
+			<fileset dir="${pathvisio.dir}">
+				<include name="*org.jfree*.jar" />
+				<include name="com.springsource.javax.servlet-2.5.0.jar" />
+			</fileset>
+		</copy>
 	</target>
 
 </project>
