@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <project name="org.pathvisio.ora" default="jar" basedir=".">
 
-	<property name="pathvisio.dir" value="../../../../pathvisio/trunk" />
-	<property name="common.bundles" value="../../common-bundles" />
+	<property name="pathvisio.dir" value="../../../common-bundles/trunk" />
 	<import file="${pathvisio.dir}/plugin-common.xml"/>
 
 	<path id="project.class.path">
@@ -12,7 +11,7 @@
 		<fileset dir="${pathvisio.dir}/modules">
 			<include name="org.pathvisio.data.jar" />
 		</fileset>
-		<fileset dir="${common.bundles}">
+		<fileset dir="${pathvisio.dir}">
 			<include name="*org.jfree*.jar" />
 		</fileset>
 	</path>
