@@ -19,10 +19,20 @@
 
 	<target name="dist-clean" description="Remove all intermediate files.">
 		<iterate target="clean"/>
+		<delete dir="dist"/>
 	</target>
 
 	<target name="jar" description="Compile project">
 		<iterate target="jar"/>
+		<mkdir dir="dist"/>
+		<copy toDir="dist">
+			<fileset dir="org.pathvisio.ora/dist/">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="org.pathvisio.ora.plugin/dist/">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="install" description="Generate jar files">
