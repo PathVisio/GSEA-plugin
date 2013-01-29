@@ -24,6 +24,8 @@
 
 	<target name="jar" description="Compile project">
 		<iterate target="jar"/>
+
+		<!-- creates dist directory for plugin including all dependencies-->
 		<mkdir dir="dist"/>
 		<copy toDir="dist">
 			<fileset dir="org.pathvisio.ora/dist/">
