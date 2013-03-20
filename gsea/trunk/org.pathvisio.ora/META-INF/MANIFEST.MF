@@ -7,6 +7,6 @@ Export-Package: org.pathvisio.ora.gsea,
  org.pathvisio.ora.util,
  org.pathvisio.ora.zscore
 Require-Bundle: org.bridgedb;bundle-version="1.1.0",
- org.pathvisio.data;bundle-version="1.0.0",
+ org.pathvisio.data;bundle-version="3.0.0",
  com.springsource.org.jfree;bundle-version="1.0.12",
  com.springsource.org.jfree.chart;bundle-version="1.0.9"
