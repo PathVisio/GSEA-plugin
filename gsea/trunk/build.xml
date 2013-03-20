@@ -41,4 +41,8 @@
 		<iterate target="install"/>
 	</target>
 
+	<target name="test" description="Run junit tests">
+		<iterate target="test"/>
+	</target>
+
 </project>
