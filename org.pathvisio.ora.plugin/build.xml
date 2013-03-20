@@ -40,4 +40,8 @@
 		</copy>
 	</target>
 
+	<target name="test">
+		<!--TODO: write some junit tests!-->
+	</target>
+
 </project>
