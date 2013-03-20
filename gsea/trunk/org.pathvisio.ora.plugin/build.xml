@@ -2,7 +2,8 @@
 <project name="org.pathvisio.ora.plugin" default="jar" basedir=".">
 
 	<property name="pathvisio.dir" value="../../../common-bundles/trunk" />
-	<import file="${pathvisio.dir}/plugin-common.xml"/>
+	<property name="common.bundles" value="../../../common-bundles/trunk" />
+	<import file="${common.bundles}/plugin-common.xml"/>
 
 	<path id="project.class.path">
 		<fileset dir="${pathvisio.dir}/lib">
@@ -20,7 +21,7 @@
 		<fileset dir="../org.pathvisio.ora/dist">
 			<include name="org.pathvisio.ora.jar" />
 		</fileset>
-		<fileset dir="${pathvisio.dir}">
+		<fileset dir="${common.bundles}">
 			<include name="*org.jfree*.jar" />
 			<include name="com.springsource.javax.servlet-2.5.0.jar" />
 		</fileset>
@@ -32,7 +33,7 @@
 		<mkdir dir="dist"/>
 		<!-- copies all plugin specific libraries to the dist directory-->
 		<copy toDir="dist" >
-			<fileset dir="${pathvisio.dir}">
+			<fileset dir="${common.bundles}">
 				<include name="*org.jfree*.jar" />
 				<include name="com.springsource.javax.servlet-2.5.0.jar" />
 			</fileset>
