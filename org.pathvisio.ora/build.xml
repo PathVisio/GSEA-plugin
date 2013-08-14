@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project name="org.pathvisio.ora" default="jar" basedir=".">
 
-	<property name="pathvisio.dir" value="../../../common-bundles/trunk" />
-	<property name="common.bundles" value="../../../common-bundles/trunk" />
+	<property name="pathvisio.dir" value="../../pvplugins/common-bundles/trunk" />
+	<property name="common.bundles" value="../../pvplugins/common-bundles/trunk" />
 
 	<import file="${common.bundles}/plugin-common.xml"/>
 
