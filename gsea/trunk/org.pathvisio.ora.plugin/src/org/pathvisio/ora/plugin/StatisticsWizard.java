@@ -226,8 +226,7 @@ public class StatisticsWizard extends Wizard
 					try{
 						gsea.runCalculation(pwDir, geneSetCollection, pk, progressText);
 					} finally {
-						setProgressValue(100);
-//						pk.setProgress(100);
+						pk.setProgress(100);
 						pk.finished();
 					}
 					return null;
@@ -271,7 +270,7 @@ public class StatisticsWizard extends Wizard
 		
 		if (wizard.getReturnCode() == Wizard.FINISH_RETURN_CODE)
 		{
-			GseaResultsFrame resultFrame = new GseaResultsFrame(desktop.getFrame(), wizard.gsea.getResults());
+			GseaResultsFrame resultFrame = new GseaResultsFrame(desktop.getFrame(), wizard.gsea.getResults(), desktop);
 			resultFrame.setVisible(true);
 		}
 	}

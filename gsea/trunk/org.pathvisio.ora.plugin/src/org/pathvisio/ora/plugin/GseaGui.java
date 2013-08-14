@@ -169,7 +169,7 @@ public class GseaGui
 			progressText.append("Reading expression data\n");
 			int permCount = 0;
 	
-			GseaPathwayResult result;
+			
 			GseaImpl gseaImpl = new GseaImpl();
 			
 			if (!(permutationNumber.getText().equals(""))) {
@@ -208,6 +208,7 @@ public class GseaGui
 						List<String> geneIds = openPathway(gpmlFilesList[i], sgdb, dataset.getDataSource());
 						GeneSet set = new GeneSet();
 						set.setName(gpmlFilesList[i].getName());
+						set.setSource(gpmlFilesList[i]);
 						set.setNumGenes(geneIds.size());
 						set.setGenes(geneIds);
 						geneSets.add(set);
@@ -222,7 +223,9 @@ public class GseaGui
 					List<GeneSet> list;
 					list = parser.parseGmtFile(geneSetFile, sgdb, dataset.getDataSource());
 					geneSets.addAll(list);
-					progressText.append("Reading " + list.size() + " gene set(s) from file " + geneSetFile.getName() + " ...\n");
+					if(list.size() != 0) {
+						progressText.append("Reading " + list.size() + " gene set(s) from file " + geneSetFile.getName() + " ...\n");
+					}
 				} catch (IOException e) {
 					progressText.append("\tCould not read gene set collection file " + geneSetFile.getName() + ".\n");
 				} catch (IDMapperException e1) {
@@ -230,25 +233,33 @@ public class GseaGui
 				}
 			}
 			
-			progressText.append("\n\nPerfomring gene set analysis for " + geneSets.size() + " pathways/gene sets...\n");
+			progressText.append("\n\nPerforming gene set analysis for " + geneSets.size() + " gene sets...\n");
+
 			int step = geneSets.size()/90;
 			int count = 1;
 			// perform GSEA for all gene sets
 			for(GeneSet set : geneSets) {
-				try {
-					result = gseaImpl.permuted_gsea(permCount, set.getGenes() , gex, idsample1, idsample2, samplePermutationBox.isSelected() == true, dataset);
-					result.createInfo(set.getName(), permCount);
-					pwList.add(result);
-					pk.setProgress(10+(count*step));
-					count++;
-				} catch (IOException e) {
-					progressText.append("\tCould not perform analysis with gene set " + geneSetFile.getName() + ".\n");
-				} catch (IDMapperException e1) {
-					progressText.append("\tCould not perform analysis with gene set " + geneSetFile.getName() + "\n");
-				} catch (SAXException e) {
-					progressText.append("\tCould not perform analysis with gene set " + geneSetFile.getName() + "\n");
+				if(!pk.isCancelled()) {
+					try {
+						GseaPathwayResult result = gseaImpl.permuted_gsea(permCount, set.getGenes() , gex, idsample1, idsample2, samplePermutationBox.isSelected() == true, dataset);
+						result.createInfo(set.getName(), permCount);
+						if(set.getSource() != null) {
+							result.setPathwayFile(set.getSource());
+						}
+						pwList.add(result);
+						progressText.append(".");
+						pk.setProgress(10+(count*step));
+						count++;
+					} catch (IOException e) {
+						progressText.append("\tCould not perform analysis with gene set " + geneSetFile.getName() + ".\n");
+					} catch (IDMapperException e1) {
+						progressText.append("\tCould not perform analysis with gene set " + geneSetFile.getName() + "\n");
+					} catch (SAXException e) {
+						progressText.append("\tCould not perform analysis with gene set " + geneSetFile.getName() + "\n");
+					}
 				}
 			}
+			progressText.append("\n");
 			Collections.sort(pwList);
 			
 			for (GseaPathwayResult i : pwList) {

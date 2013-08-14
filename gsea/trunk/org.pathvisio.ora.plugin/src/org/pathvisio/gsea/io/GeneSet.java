@@ -1,5 +1,6 @@
 package org.pathvisio.gsea.io;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class GeneSet {
 	private List<String> genes;
 	private int numGenes = 0;
 	private int numGenesNotMapped = 0;
+	private File source;
 	
 	public GeneSet() {
 		genes = new ArrayList<String>();
@@ -53,5 +55,13 @@ public class GeneSet {
 
 	public void setNumGenesNotMapped(int numGenesNotMapped) {
 		this.numGenesNotMapped = numGenesNotMapped;
+	}
+
+	public File getSource() {
+		return source;
+	}
+
+	public void setSource(File source) {
+		this.source = source;
 	}
 }
