@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bridgedb.DataSource;
-import org.bridgedb.IDMapper;
 import org.bridgedb.IDMapperException;
 import org.pathvisio.data.DataException;
 import org.pathvisio.data.DataInterface;

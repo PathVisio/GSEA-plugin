@@ -17,6 +17,7 @@
 
 package org.pathvisio.ora.gsea;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.pathvisio.ora.util.RowWithProperties;
 public class GseaPathwayResult implements RowWithProperties<Column>, Comparable<GseaPathwayResult>
 {
 	private String pathwayName;
+	private File pathwayFile;
 	private String pathwayText;
 	private JFreeChart pathwayChart;
 
@@ -151,5 +153,13 @@ public class GseaPathwayResult implements RowWithProperties<Column>, Comparable<
 	public int compareTo(GseaPathwayResult arg0)
 	{
 		return Double.compare(arg0.esMax, esMax);
+	}
+
+	public File getPathwayFile() {
+		return pathwayFile;
+	}
+
+	public void setPathwayFile(File pathwayFile) {
+		this.pathwayFile = pathwayFile;
 	}
 }
