@@ -32,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jfree.chart.JFreeChart;
+import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.gui.dialogs.OkCancelDialog;
 import org.pathvisio.ora.gsea.GseaPathwayResult;
 import org.pathvisio.ora.gsea.GseaResults;
@@ -62,12 +63,15 @@ public class GseaResultsFrame extends OkCancelDialog{
 	private JPanel mainPanel = new JPanel(layout);
 	private CellConstraints cc = new CellConstraints();
 	private JScrollPane scrollingArea;
+	private PvDesktop desktop;
 	
-	public GseaResultsFrame(Frame frame, GseaResults gseaResults) {
+	public GseaResultsFrame(Frame frame, GseaResults gseaResults, PvDesktop desktop) {
 		super(frame, "GSEA Results", frame, true, false);
+		this.desktop = desktop;
 		setDialogComponent(createDialogPane(gseaResults));
 		pack();
 		setLocationRelativeTo(frame);
+		setModal(false);
 	}	
 	
 	protected Component createDialogPane(GseaResults gseaResults) 
@@ -107,6 +111,10 @@ public class GseaResultsFrame extends OkCancelDialog{
 				
 				mainPanel.revalidate();
 				mainPanel.repaint();
+				
+				if(found.getPathwayFile() != null) {
+					desktop.getSwingEngine().openPathway(found.getPathwayFile());
+				}
 			}
 		}
 	}
