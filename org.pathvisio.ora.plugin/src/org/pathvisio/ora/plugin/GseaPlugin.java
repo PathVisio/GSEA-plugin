@@ -55,15 +55,13 @@ public class GseaPlugin implements Plugin, BundleActivator
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception
-	{
+	public void start(BundleContext context) throws Exception {
 		GseaPlugin plugin = new GseaPlugin();
 		context.registerService(Plugin.class.getName(), plugin, null);	
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception
-	{
+	public void stop(BundleContext context) throws Exception {
+		desktop.unregisterMenuAction ("Data", oraWizardAction);	
 	}
-
 }
